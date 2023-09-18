@@ -9,7 +9,7 @@ export default (req, res) => {
     metadata: {
       name:"weapon"+id,
       description:"this is a useful weapon,please keep it safe",
-      image_uri:"",
+      image_uri:"https://www.pencilvision.top/img/box.jpg",
       rarity:"3",
       type:"weapon",
       value:"5ETH",
