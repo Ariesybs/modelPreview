@@ -9,13 +9,13 @@ export default (req, res) => {
     metadata: {
       name:"weapon"+id,
       description:"this is a useful weapon,please keep it safe",
-      image_uri:"https://www.pencilvision.top/img/box.jpg",
+      image:"https://www.pencilvision.top/img/box.jpg",
       rarity:"3",
       type:"weapon",
       value:"5ETH",
       weight:"",
       durability:"",
-      animation_uri:"https://pencilvision.top/model/"+id
+      animation_url:"https://pencilvision.top/model/"+id
     },
   };
 
