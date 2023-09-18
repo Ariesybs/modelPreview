@@ -1,0 +1,52 @@
+/* 全局样式 */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url('./img/vr.jpg'); /* 替换 'your-background-image.jpg' 为你的背景图片路径 */
+    background-size: cover;
+    
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+/* 头部 */
+.header {
+    background-color: rgba(0, 0, 0, 0.6); /* 添加半透明背景色 */
+    color: #fff;
+    text-align: center;
+    padding: 10% 0;
+}
+.header h1 {
+    font-size: 3rem;
+}
+/* 主要内容区域 */
+.main-content {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    padding: 50px;
+}
+.main-content .info {
+    background-color: rgba(255, 255, 255, 0.9); /* 添加半透明背景色 */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.main-content .info h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+.main-content .info p {
+    font-size: 1.2rem;
+    color: #333;
+}
+/* 动画效果 */
+.animate__animated {
+    animation-duration: 1s;
+}
+.animate__fadeInLeft {
+    animation-name: fadeInLeft;
+}
+.animate__fadeInRight {
+    animation-name: fadeInRight;
+}

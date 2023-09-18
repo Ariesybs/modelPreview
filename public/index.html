@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>铅笔视界</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="icon" href="../public/img/pen_logo.png">
+    <style>
+        /* 全局样式 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('../public/img/vr.jpg'); 
+            background-size: cover;
+            
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        /* 头部 */
+        .header {
+            background-color: rgba(0, 0, 0, 0.6); /* 添加半透明背景色 */
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+        }
+        .header h1 {
+            font-size: 3rem;
+        }
+        /* 主要内容区域 */
+        .main-content {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            padding: 50px;
+        }
+        .main-content .info {
+            background-color: rgba(255, 255, 255, 0.9); /* 添加半透明背景色 */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .main-content .info h2 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        .main-content .info p {
+            font-size: 1.2rem;
+            color: #333;
+        }
+        /* 动画效果 */
+        .animate__animated {
+            animation-duration: 1s;
+        }
+        .animate__fadeInLeft {
+            animation-name: fadeInLeft;
+        }
+        .animate__fadeInRight {
+            animation-name: fadeInRight;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1 class="animate__animated animate__fadeInLeft">铅笔视界</h1>
+        <p class="animate__animated animate__fadeInRight">Build Your Oasis World With VR</p>
+    </div>
+
+    <!-- <div class="main-content">
+        <div class="info animate__animated animate__fadeInLeft">
+            <h2>关于我们</h2>
+            <p>我们是一家创新的公司，致力于提供高质量的产品和服务。我们的团队充满激情，追求卓越。</p>
+        </div>
+        <div class="info animate__animated animate__fadeInRight">
+            <h2>我们的使命</h2>
+            <p>我们的使命是通过创新和卓越的工作，满足客户的需求并持续发展。</p>
+        </div>
+    </div> -->
+
+    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
+    
+</body>
+</html>
