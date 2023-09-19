@@ -15,7 +15,7 @@ export default (req, res) => {
       weight:"",
       durability:"",
       animation_url:"https://pencilvision.top/model/"+id
-    
+
   };
 
   res.status(200).json(jsonData);
