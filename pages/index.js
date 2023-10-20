@@ -1,6 +1,15 @@
 import Head from 'next/head';
+import Link from 'next/link'
 import '../public/home.css';
 const HomePage = () => {
+
+  const handleAccountBind = () => {
+    window.location.href = '/accountBind'
+  };
+
+  const handleAccountUnbind = () => {
+    // 处理账户解绑逻辑
+  };
   return (
     <>
       <Head>
@@ -13,11 +22,20 @@ const HomePage = () => {
       </Head>
       <div className="header">
         <h1 className="animate__animated animate__fadeInLeft" >铅笔视界</h1>
-        <p className="animate__animated animate__fadeInRight">Build Your Oasis World With VR</p>
+        <p className="animate__animated animate__fadeInRight">Build Your Oasis World With VR&AR</p>
     </div>
+
+    <div className="button-container">
+        <button onClick={handleAccountBind} >
+          账户绑定
+        </button>
+        <button onClick={handleAccountUnbind}>
+          账户解绑
+        </button>
+      </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
-    
+
     </>
   );
 };
