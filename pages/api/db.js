@@ -1,18 +1,46 @@
 // db.js
 import mongoose from "mongoose";
 
+require('dotenv').config(); // 读取并配置环境变量
+
 // 连接字符串
-const uri =
-  "mongodb+srv://1575577205:admin@cluster0.nzrcitw.mongodb.net/NFC?retryWrites=true&w=majority";
+const uri =process.env.DATABASE_URL;
+
 
 mongoose.connect(uri, {
   useNewUrlParser: true,
 });
 
-export const NFC = mongoose.model("NFC", {
-  secretKey: String,
-  signerAddress: String,
+export const bind = mongoose.models.bind?mongoose.models.bind: mongoose.model("bind", {
+  nfc_id: String,
+  account_bind: String,
   signature: String,
-  recoveredAddress: String,
-  flag: Boolean,
-});
+  act_time:Date
+},"bind");
+
+export const NFC = mongoose.models.NFC?mongoose.models.NFC: mongoose.model("NFC",{
+  id:{
+    type:Number,
+    require:true
+  },
+  secret_key:{
+    type:String,
+    require:true
+  },
+  status:{
+    type:Boolean,
+    default:false
+  },
+  account_bind:{
+    type:String,
+    default:""
+  },
+  act_time:{
+    type:Date,
+    default:Date.now()
+  },
+  out_time:{
+    type:Date,
+    default:Date.now()
+  }
+},"nfcs")

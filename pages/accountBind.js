@@ -15,7 +15,6 @@ const AccountBind = () => {
 
     let provider;
     if (window.ethereum == null) {
-      console.log("MetaMask not installed; using read-only defaults");
       provider = ethers.getDefaultProvider();
     } else {
       provider = new ethers.BrowserProvider(window.ethereum);
@@ -23,25 +22,24 @@ const AccountBind = () => {
       signer = await provider.getSigner();
 
       // 获取输入框内容并进行签名
-      const secretKey = inputValue;
-      const signature = await signer.signMessage(secretKey);
+      const secret_key = inputValue;
+      const signature = await signer.signMessage(secret_key);
       setSignature(signature);
       const signerAddress = await signer.getAddress();
 
-      console.log(signerAddress);
+      try{
+        const res = await axios.post("/api/api_bind", { secret_key, signerAddress, signature })
+        alert(res.data.message)
+      }catch(e){
+        alert(e.response.data.message)
+      }
 
-      axios
-        .post("/api/NFCBind", { secretKey, signerAddress, signature })
-        .then((response) => {
-          console.log(response.data.message);
-          console.log(response.data.savedNFC);
-        });
     }
   };
 
   return (
     <div>
-      <input type="text" value={inputValue} onChange={handleInputChange} />
+      <input type="text" placeholder="请输入NFC激活码" value={inputValue} onChange={handleInputChange} />
       <button onClick={handleBindClick}>绑定</button>
       <p>签名: {signature}</p>
     </div>

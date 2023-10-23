@@ -8,8 +8,11 @@ const HomePage = () => {
   };
 
   const handleAccountUnbind = () => {
-    // 处理账户解绑逻辑
+    window.location.href = '/accountUnBind'
   };
+  const handleNFCManager = ()=>{
+    window.location.href = '/NFCManager'
+  }
   return (
     <>
       <Head>
@@ -31,6 +34,9 @@ const HomePage = () => {
         </button>
         <button onClick={handleAccountUnbind}>
           账户解绑
+        </button>
+        <button onClick={handleNFCManager}>
+          NFC管理
         </button>
       </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

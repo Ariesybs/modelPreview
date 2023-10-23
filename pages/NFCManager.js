@@ -6,58 +6,58 @@ const NFC = () => {
   const [formData, setFormData] = useState({
     id: '',
     secret_key: '',
-    status: false,
-    act_time: '',
-    account_bind: '',
   });
 
   useEffect(() => {
-    //fetchNFCList();
+    fetchNFCList();
   }, []);
 
   const fetchNFCList = async () => {
     try {
-      const response = await axios.get('/api/nfc');
+      const response = await axios.get('/api/api_nfc');
+      console.log(response.data)
       setNfcList(response.data);
     } catch (error) {
       console.error('获取NFC列表时出现错误：', error);
+      
     }
   };
 
   const handleInputChange = (e) => {
-    setFormData({
+
+    const data = {
       ...formData,
-      [e.target.name]: e.target.value,
-    });
+      [e.target.name]: e.target.value
+    }
+    
+    setFormData(data);
+
+    
   };
 
-  const handleCheckboxChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.checked,
-    });
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(formData)
     try {
-      await axios.post('/api/nfc', formData);
+      const res = await axios.post('/api/api_nfc', formData);
+      console.log(res.data.message)
       setFormData({
         id: '',
         secret_key: '',
-        status: false,
-        act_time: '',
-        account_bind: '',
       });
       fetchNFCList();
     } catch (error) {
       console.error('创建NFC时出现错误：', error);
+      alert(error.response.data.message)
     }
   };
 
   const handleDelete = async (id) => {
+    if(!confirm(`确定删除id为${id}的NFC?`))return
     try {
-      await axios.delete(`/api/nfc/`);
+      const res = await axios.delete(`/api/api_nfc?id=${id}`);
+      console.log(res.data.message)
       fetchNFCList();
     } catch (error) {
       console.error('删除NFC时出现错误：', error);
@@ -66,7 +66,7 @@ const NFC = () => {
 
   return (
     <div>
-      <h1>NFC管理页面</h1>
+      <h1>NFC管理</h1>
       <form onSubmit={handleSubmit}>
         <label>
           ID:
@@ -78,20 +78,6 @@ const NFC = () => {
           <input type="text" name="secret_key" value={formData.secret_key} onChange={handleInputChange} />
         </label>
         <br />
-        <label>
-          状态:
-          <input type="checkbox" name="status" checked={formData.status} onChange={handleCheckboxChange} />
-        </label>
-        <br />
-        <label>
-          激活时间:
-          <input type="date" name="act_time" value={formData.act_time} onChange={handleInputChange} />
-        </label>
-        <br />
-        <label>
-          绑定账户:
-          <input type="text" name="account_bind" value={formData.account_bind} onChange={handleInputChange} />
-        </label>
         <br />
         <button type="submit">添加</button>
       </form>
@@ -99,8 +85,8 @@ const NFC = () => {
       <ul>
         {nfcList.map((nfc) => (
           <li key={nfc._id}>
-            ID: {nfc.id}, 密钥: {nfc.secret_key}, 状态: {nfc.status ? '启用' : '禁用'}, 激活时间: {nfc.act_time}, 绑定账户: {nfc.account_bind}
-            <button onClick={() => handleDelete(nfc._id)}>删除</button>
+            ID: {nfc.id}, 密钥: {nfc.secret_key}, 状态: {nfc.status ? '激活' : '未激活'}, 激活时间: {nfc.status ? nfc.act_time:""},出厂时间:{nfc.out_time}, 绑定账户: {nfc.account_bind}
+            <button onClick={() => handleDelete(nfc.id)}>删除</button>
           </li>
         ))}
       </ul>
