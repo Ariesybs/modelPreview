@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import axios from 'axios';
 
-const NFC = () => {
+const NFCManager = () => {
+
+    const router = useRouter();
   const [nfcList, setNfcList] = useState([]);
   const [formData, setFormData] = useState({
     id: '',
@@ -9,7 +12,18 @@ const NFC = () => {
   });
 
   useEffect(() => {
-    fetchNFCList();
+    
+    const sessionId = localStorage.getItem("sessionId")
+    axios.get(`/api/api_admin_login?sessionId=${sessionId}`).then((res)=>{
+      if(!res.data.isValid){
+        router.push('/adminLogin');
+      }else{
+        fetchNFCList();
+      }
+    })
+
+    
+    
   }, []);
 
   const fetchNFCList = async () => {
@@ -94,4 +108,4 @@ const NFC = () => {
   );
 };
 
-export default NFC;
+export default NFCManager;

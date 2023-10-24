@@ -9,6 +9,7 @@ const uri =process.env.DATABASE_URL;
 
 mongoose.connect(uri, {
   useNewUrlParser: true,
+  
 });
 
 export const bind = mongoose.models.bind?mongoose.models.bind: mongoose.model("bind", {
@@ -44,3 +45,9 @@ export const NFC = mongoose.models.NFC?mongoose.models.NFC: mongoose.model("NFC"
     default:Date.now()
   }
 },"nfcs")
+
+export const admin = mongoose.models.admin?mongoose.models.admin:mongoose.model("admin",{
+  username:String,
+  password:String,
+  session_id:String
+},"admin")
