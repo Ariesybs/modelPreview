@@ -17,8 +17,14 @@ export default async (req,res)=>{
         };
 
         const alchemy = new Alchemy(config);
-        const nfts = await alchemy.nft.getNftsForOwner(account)
-        res.status(200).json({nfts})
+        const data = await alchemy.nft.getNftsForOwner(account)
+        const nfts = data.ownedNfts
+        const nftIds = []
+        for (let i = 0; i < nfts.length; i++) {
+            if(nfts[i].contract.address!=='0x6709f7f16d7c4969244e900854f45a8c0738793d') continue
+            nftIds.push(nfts[i].tokenId)
+        }
+        res.status(200).json({nftIds})
 
 
     }
