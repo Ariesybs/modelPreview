@@ -21,7 +21,7 @@ export const bind = mongoose.models.bind?mongoose.models.bind: mongoose.model("b
 
 export const NFC = mongoose.models.NFC?mongoose.models.NFC: mongoose.model("NFC",{
   id:{
-    type:Number,
+    type:String,
     require:true
   },
   secret_key:{
