@@ -1,82 +1,58 @@
-import { useEffect, useState } from 'react';
-import { ethers } from 'ethers';
-import axios from 'axios';
+import { useState } from "react";
+import { ethers } from "ethers";
+import axios from "axios";
+import { ALERT_BOX } from ".";
+export default function nfc_bind() {
 
-export default function UnbindPage() {
-    const [currentAccount, setCurrentAccount] = useState('');
-    const [bindingInfo, setBindingInfo] = useState(null);
+  return (
 
-    useEffect(() => {
-        // 监听MetaMask账户变化
-        async function checkAccount() {
-            let provider;
-            if (window.ethereum == null) {
-                provider = ethers.getDefaultProvider();
-            } else {
-                provider = new ethers.BrowserProvider(window.ethereum);
-            }
-
-            const signer = await provider.getSigner();
-            const curAccount = await signer.getAddress();
-            setCurrentAccount(curAccount);
-            getBindingInfo(curAccount);
-        }
-
-        // 初始页面加载时检查账户
-        checkAccount();
-
-        // 实时监听MetaMask账户变化
-        const accountsChangedHandler = (accounts) => {
-            checkAccount();
-        };
-
-        ethereum.on('accountsChanged', accountsChangedHandler);
-
-        // 清理事件侦听器
-        return () => {
-            ethereum.removeListener('accountsChanged', accountsChangedHandler);
-        };
-    }, []);
-
-    // 发送GET请求获取绑定信息
-    async function getBindingInfo(account) {
-        try {
-            const res = await axios.get(`/api/api_bind?account=${account}`);
-            console.log(res)
-            setBindingInfo(res.data);
-        } catch (e) {
-            console.log("获取数据失败", e);
-        }
-    }
-
-    // 发送DELETE请求解绑NFC
-    async function unbindNFC(nfc_id) {
-        if(!confirm("确定解绑?"))return
-        if(currentAccount&&bindingInfo){
-            try{
-                const res = await axios.delete(`/api/api_bind?id=${nfc_id}`)
-                alert(res.data.message)
-                getBindingInfo(currentAccount)
-            }catch(e){
-
-            }
-        }
-    }
-
-    return (
-        <div>
-            <h1>解除绑定</h1>
-            <p>当前MetaMask账户: {currentAccount}</p>
-            {bindingInfo ? (
-                <div>
-                    <p>NFC ID: {bindingInfo.nfc_id}</p>
-                    <p>绑定账户: {bindingInfo.account_bind}</p>
-                    <p>绑定时间: {bindingInfo.act_time}</p>
-                    <button onClick={()=>{unbindNFC(bindingInfo.nfc_id)}}>解绑</button>
-                </div>
-            ) : (
-                <p>当前账户未绑定任何NFC。<a href='/accountBind'>去绑定</a></p>
-            )}
+    <>
+    <div className="relative isolate overflow-hidden flex justify-center items-center min-h-screen bg-gray-900 py-16 sm:py-24 lg:py-32">
+     
+    <div>    
+      <div className="mx-auto max-w-7xl px-6 lg:px-8    ">
+        <div className="mx-auto grid max-w-3xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-2">
+          <div className="max-w-xl lg:max-w-lg flex flex-col justify-center">
+            <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">解绑您的NFC</h2>
+            <p className="mt-4 text-lg leading-8 text-gray-300">
+              此操作将会解除您的NFC与MetaMask账户的绑定，与NFC绑定的所有NFT资产将在游戏中不可用。
+            </p>
+            <div className="mt-6 flex max-w-md gap-x-4">
+              <label htmlFor="email-address" className="sr-only">
+                Secret key
+              </label>
+              
+              <button
+                
+                type="submit"
+                className="flex-none rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+              >
+                解绑
+              </button>
+            </div>
+          </div>
+          <div className="flex justify-center items-center pl-16 ">
+            <img
+            src="/img/unbind.png" 
+            className="max-w-full h-auto lg:max-w-none"
+            style={{ width: '800px', height: 'auto' }}
+            />
         </div>
-    );
+        </div>
+      </div>
+    </div>
+      
+      <div className="absolute left-1/2 top-0 -z-10 -translate-x-1/2 blur-3xl xl:-top-6" aria-hidden="true">
+        <div
+          className="aspect-[1155/678] w-[72.1875rem] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30"
+          style={{
+            clipPath:
+              'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)',
+          }}
+        />
+      </div>
+    </div>
+    </>
+    
+  )
 }

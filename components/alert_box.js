@@ -2,10 +2,9 @@ import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline'
 
-export default function alert_box(props) {
+export default function alert_box({alertData,onClose}) {
     const [open, setOpen] = useState(true)
-    const {message,isSuccess,onClose} = props
-
+    const{message,isSuccess} = alertData
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-10"  onClose={setOpen}>

@@ -12,14 +12,18 @@ mongoose.connect(uri, {
   
 });
 
-const nfc_bind_schema = new mongoose.Schema({
-
-})
+const nftBindSchema = new mongoose.Schema({
+  address: String,
+  tokenId: String
+});
 
 export const bind = mongoose.models.bind?mongoose.models.bind: mongoose.model("bind", {
   nfc_id: String,
   account_bind: String,
-  nfc_bind: Object,
+  nft_binds: {
+    type: [nftBindSchema],
+    default: [] 
+  },
   signature: String,
   act_time:Date
 },"bind");

@@ -30,9 +30,6 @@ export default function nfc_bind() {
 
         try{
             const res = await axios.post("/api/api_bind", { secret_key, signerAddress, signature })
-            // return(
-            //     <ALERT_BOX props={{isSuccess:res.data.isSuccess,massage:res.data.massage}}/>
-            // )
             setAlertData({ isSuccess: res.data.isSuccess, message: res.data.message });
         }catch(e){
             console.log(e)
@@ -83,7 +80,7 @@ export default function nfc_bind() {
             <img
             src="/img/bind.png" 
             className="max-w-full h-auto lg:max-w-none"
-            style={{ width: '900px', height: 'auto' }}
+            style={{ width: '800px', height: 'auto' }}
             />
         </div>
         </div>

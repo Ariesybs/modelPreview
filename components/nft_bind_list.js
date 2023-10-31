@@ -37,7 +37,7 @@ export default function nft_bind_list(props){
         }
         }
     
-        const selectClick = (address,tokenId)=>{
+      const selectClick = (address,tokenId)=>{
         const isSelected = selectedNFTs.some(
             (selectedItem) =>
             selectedItem.address === address && selectedItem.tokenId === tokenId
@@ -57,10 +57,8 @@ export default function nft_bind_list(props){
             { address, tokenId },
             ]);
         }
-
-        console.log(selectedNFTs)
     
-    }
+      }
 
     return(<>
         {Object.entries(categorizedNFTs).map(([address, data]) => {

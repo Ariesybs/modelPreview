@@ -1,48 +1,14 @@
 import React, { useState ,useEffect} from "react";
 import { ethers } from "ethers";
 import axios from "axios";
-import{NFT_BIND_LIST,NFC_BIND,NFT_LIST} from '../components'
+import{NFC_BIND,NFT_LIST} from '../components'
 const AccountBind = () => {
 
   const [curAccount,setCurAccount] = useState(null);
 
   const [isBind,setIsBind] = useState(false);
   
-  const nftData = [
-    {
-      id: 1,
-      name: 'Earthen Bottle',
-      href: '#',
-      price: '$48',
-      imageSrc: '/img/box.jpg',
-      imageAlt: 'Tall slender porcelain bottle with natural clay textured body and cork stopper.',
-    },
-    {
-      id: 2,
-      name: 'Nomad Tumbler',
-      href: '#',
-      price: '$35',
-      imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-02.jpg',
-      imageAlt: 'Olive drab green insulated bottle with flared screw lid and flat top.',
-    },
-    {
-      id: 3,
-      name: 'Focus Paper Refill',
-      href: '#',
-      price: '$89',
-      imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-03.jpg',
-      imageAlt: 'Person using a pen to cross a task off a productivity paper card.',
-    },
-    {
-      id: 4,
-      name: 'Machined Mechanical Pencil',
-      href: '#',
-      price: '$35',
-      imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-04.jpg',
-      imageAlt: 'Hand holding black machined steel mechanical pencil with brass tip and top.',
-    },
-    
-  ];
+  const [NFTData,setNFTData] = useState();
   useEffect(()=>{
     checkAccount();
     // 实时监听MetaMask账户变化
@@ -66,8 +32,9 @@ const AccountBind = () => {
   
   const checkIsBind = async(account)=>{
     try{
-        const res = await axios.get(`/api/api_nft?id=${account}`)
+        const res = await axios.get(`/api/api_nft?account=${account}`)
         setIsBind(res.data.isBind)
+        setNFTData(res.data.nfts)
     }catch(e){
 
     }
@@ -76,11 +43,10 @@ const AccountBind = () => {
   return (
     <>
     <div className="relative isolate overflow-hidden flex justify-center items-center min-h-screen bg-gray-900 py-16 sm:py-24 lg:py-32">
-      {/* <NFC_BIND/> */}
-      <div className="container mx-auto mt-8">
-      <h1 className="text-5xl text-white font-semibold text-center mb-4">我的NFT列表</h1>
-      <NFT_LIST nftData={nftData} />
-      </div>
+      {
+        isBind?<NFT_LIST NFTData={NFTData} />:<NFC_BIND/>
+      }
+      
       <div className="absolute left-1/2 top-0 -z-10 -translate-x-1/2 blur-3xl xl:-top-6" aria-hidden="true">
         <div
           className="aspect-[1155/678] w-[72.1875rem] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30"
