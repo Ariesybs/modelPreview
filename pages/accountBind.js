@@ -9,24 +9,25 @@ const AccountBind = () => {
   const [isBind,setIsBind] = useState(false);
   
   const [NFTData,setNFTData] = useState();
+
+  const [NFTBinds,setNFTBinds] = useState(null)
   useEffect(()=>{
     checkAccount();
     // 实时监听MetaMask账户变化
     ethereum.on('accountsChanged', checkAccount);
-  },[curAccount])
+  },[])
 
   const checkAccount = async()=>{
-    let provider;
-    if (window.ethereum == null) {
-        provider = ethers.getDefaultProvider();
-    } else {
-        provider = new ethers.BrowserProvider(window.ethereum);
+    try{
+      const provider = window.ethereum === null?ethers.getDefaultProvider():new ethers.BrowserProvider(window.ethereum);
+      const signer = await provider.getSigner();
+      const account = await signer.getAddress();
+      checkIsBind(account);
+      setCurAccount(account);
+    }catch(e){
+      console.log("用户取消metamask登陆")
     }
-
-    const signer = await provider.getSigner();
-    const account = await signer.getAddress();
-    checkIsBind(account);
-    setCurAccount(account);
+    
   }
 
   
@@ -35,6 +36,7 @@ const AccountBind = () => {
         const res = await axios.get(`/api/api_nft?account=${account}`)
         setIsBind(res.data.isBind)
         setNFTData(res.data.nfts)
+        setNFTBinds(res.data.nft_binds)
     }catch(e){
 
     }
@@ -44,7 +46,7 @@ const AccountBind = () => {
     <>
     <div className="relative isolate overflow-hidden flex justify-center items-center min-h-screen bg-gray-900 py-16 sm:py-24 lg:py-32">
       {
-        isBind?<NFT_LIST NFTData={NFTData} />:<NFC_BIND/>
+        isBind?<NFT_LIST NFTData={NFTData} NFTBinds = {NFTBinds} curAccount = {curAccount}/>:<NFC_BIND curAccount={curAccount}/>
       }
       
       <div className="absolute left-1/2 top-0 -z-10 -translate-x-1/2 blur-3xl xl:-top-6" aria-hidden="true">

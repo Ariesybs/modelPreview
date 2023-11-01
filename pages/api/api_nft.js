@@ -17,7 +17,11 @@ export default async (req,res)=>{
         //获取用户NFT列表
         const data = await alchemy.nft.getNftsForOwner(account)
         const nfts = data.ownedNfts        
-        res.status(200).json({isBind:find_bind!==null,nfts:nfts})
+        res.status(200).json({
+            isBind:find_bind!==null,
+            nfts:nfts,
+            nft_binds:find_bind===null?null:find_bind.nft_binds
+        })
 
     }
 

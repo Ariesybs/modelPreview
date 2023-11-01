@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { ethers } from "ethers";
 import axios from "axios";
-import { ALERT_BOX } from ".";
-export default function nfc_bind() {
-
+import { ALERT_BOX , BTN_CONNECT} from ".";
+export default function nfc_bind({curAccount}) {
+  console.log(curAccount)
     const [inputValue, setInputValue] = useState("");
     const [alertData, setAlertData] = useState(null);
     const [signature, setSignature] = useState("");
@@ -13,34 +13,27 @@ export default function nfc_bind() {
     };
 
     const handleBindClick = async () => {
-    let signer = null;
-    let provider;
-    if (window.ethereum == null) {
-        provider = ethers.getDefaultProvider();
-    } else {
-        provider = new ethers.BrowserProvider(window.ethereum);
+   
+    const provider = window.ethereum === null?ethers.getDefaultProvider():new ethers.BrowserProvider(window.ethereum);
+    const signer = await provider.getSigner();
 
-        signer = await provider.getSigner();
+    // 获取输入框内容并进行签名
+    const secret_key = inputValue;
+    const signature = await signer.signMessage(secret_key);
+    setSignature(signature);
+    const signerAddress = await signer.getAddress();
 
-        // 获取输入框内容并进行签名
-        const secret_key = inputValue;
-        const signature = await signer.signMessage(secret_key);
-        setSignature(signature);
-        const signerAddress = await signer.getAddress();
-
-        try{
-            const res = await axios.post("/api/api_bind", { secret_key, signerAddress, signature })
-            setAlertData({ isSuccess: res.data.isSuccess, message: res.data.message });
-        }catch(e){
-            console.log(e)
-        }finally{
-            
-        }
-
+    try{
+        const res = await axios.post("/api/api_bind", { secret_key, signerAddress, signature })
+        setAlertData({ isSuccess: res.data.isSuccess, message: res.data.message });
+    }catch(e){
+        console.log(e)
     }
+    
     };
   return (
     <div>
+      <BTN_CONNECT account={curAccount}/>
         {alertData && (
         <ALERT_BOX
           isSuccess={alertData.isSuccess}

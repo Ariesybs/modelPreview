@@ -1,14 +1,14 @@
 import axios from "axios";
 import React,{useEffect, useState} from "react";
 import { ethers } from "ethers";
-import { ALERT_BOX } from ".";
-export default function NFTList ({ NFTData }){
+import { ALERT_BOX,BTN_CONNECT } from ".";
+export default function NFTList ({ NFTData ,NFTBinds,curAccount}){
     const[categorizedNFTs,setCategorizedNFTs] = useState([])
     const [selectedNFTs, setSelectedNFTs] = useState([]);
     const [alertData,setAlertData] = useState({})
     const [isShow,setIsShow] = useState(false)
     useEffect(()=>{
-        setSelectedNFTs([])
+        setSelectedNFTs(NFTBinds)
         const dic = {}
         NFTData.map((nft)=>{
             if(!dic[nft.contract.address]){
@@ -78,64 +78,67 @@ export default function NFTList ({ NFTData }){
 
     
     return (
-        <div className="container mx-auto mt-8">
-            {isShow?<ALERT_BOX alertData = {alertData} onClose = {onClose}/>:""}
-            <h1 className="text-5xl text-white font-semibold text-center mb-4">我的NFT</h1>
-            <p className="text-1xl font-semibold text-center text-white pt-10 mb-4">选择您的NFT，并单击右下方按钮与您的NFC卡带进行绑定</p>
-            <div>
-            <h2 className="sr-only">NFTs</h2>
-                <div >
-                {
-                    categorizedNFTs.map((contract) => (
-                        <div key={contract.symbol}>
-                            <div className=" text-3xl font-semibold text-center text-white pt-10 mb-4">
-                            {contract.symbol}
-                            </div>
-                            <div  className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-                            
-                            {contract.nft.map((nft) => {
-                                const isSelected = selectedNFTs.some(
-                                    (selectedItem) =>
-                                      selectedItem.address === nft.contract.address && selectedItem.tokenId === nft.tokenId
-                                  );
-                                return(
-                                    <a key={`${nft.address}?id=${nft.tokenId}`} className="group">
-                                <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7 relative">
-                                    <img
-                                    src={nft.rawMetadata.image}
-                                    className={`h-48 w-full cursor-pointer object-cover object-center group-hover:opacity-75 ${isSelected?"border-4 border-green-500":""}`}
-                                    onClick={()=>{selectClick(nft.contract.address,nft.tokenId)}}
-                                    />
-                                    {isSelected && (
+        <div>
+            <BTN_CONNECT account={curAccount}/>
+            <div className="container mx-auto mt-8">
+                {isShow?<ALERT_BOX alertData = {alertData} onClose = {onClose}/>:""}
+                <h1 className="text-5xl text-white font-semibold text-center mb-4">我的NFT</h1>
+                <p className="text-1xl font-semibold text-center text-white pt-10 mb-4">选择您的NFT，并单击右下方按钮与您的NFC卡带进行绑定</p>
+                <div>
+                <h2 className="sr-only">NFTs</h2>
+                    <div >
+                    {
+                        categorizedNFTs.map((contract) => (
+                            <div key={contract.symbol}>
+                                <div className=" text-3xl font-semibold text-center text-white pt-10 mb-4">
+                                {contract.symbol}
+                                </div>
+                                <div  className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+                                
+                                {contract.nft.map((nft) => {
+                                    const isSelected = selectedNFTs.some(
+                                        (selectedItem) =>
+                                        selectedItem.address === nft.contract.address && selectedItem.tokenId === nft.tokenId
+                                    );
+                                    return(
+                                        <a key={`${nft.address}?id=${nft.tokenId}`} className="group">
+                                    <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7 relative">
                                         <img
-                                            src="/img/check.png" 
-                                            alt="Check Icon"
-                                            className="absolute top-0 right-0 m-2 h-8 w-8" 
+                                        src={nft.rawMetadata.image}
+                                        className={`h-48 w-full cursor-pointer object-cover object-center group-hover:opacity-75 ${isSelected?"border-4 border-green-500":""}`}
+                                        onClick={()=>{selectClick(nft.contract.address,nft.tokenId)}}
                                         />
-                                    )}
-                                </div>
-                                <h1 className="mt-2 text-2xl text-white text-center">{`${nft.contract.name} #${nft.tokenId}`}</h1>
-                                </a>
+                                        {isSelected && (
+                                            <img
+                                                src="/img/check.png" 
+                                                alt="Check Icon"
+                                                className="absolute top-0 right-0 m-2 h-8 w-8" 
+                                            />
+                                        )}
+                                    </div>
+                                    <h1 className="mt-2 text-2xl text-white text-center">{`${nft.contract.name} #${nft.tokenId}`}</h1>
+                                    </a>
 
-                                
-                                )
-                                
-                            })}
+                                    
+                                    )
+                                    
+                                })}
+                                </div>
+                                <button className="fixed bottom-10 right-10 rounded-full w-20 h-20 bg-blue-500 text-white p-2 flex flex-col justify-between items-center"
+                                    onClick={NFTBind}
+                                >
+                                    <div className="text-center">
+                                        {`${selectedNFTs.length}/${NFTData.length}`}
+                                    </div>
+                                    <div className="text-center border-t pt-1">
+                                        绑定
+                                    </div>
+                                </button>
                             </div>
-                            <button className="fixed bottom-10 right-10 rounded-full w-20 h-20 bg-blue-500 text-white p-2 flex flex-col justify-between items-center"
-                                onClick={NFTBind}
-                            >
-                                <div className="text-center">
-                                    {`${selectedNFTs.length}/${NFTData.length}`}
-                                </div>
-                                <div className="text-center border-t pt-1">
-                                    绑定
-                                </div>
-                            </button>
-                        </div>
-                    ))
-                }
-                    
+                        ))
+                    }
+                        
+                    </div>
                 </div>
             </div>
         </div>
