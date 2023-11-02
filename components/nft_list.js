@@ -32,7 +32,7 @@ export default function NFTList ({ NFTData ,NFTBinds,curAccount}){
     },[])
 
     //NFT选择
-    const selectClick = (address,tokenId)=>{
+    const selectClick = (address,tokenId,model)=>{
         const isSelected = selectedNFTs.some(
             (selectedItem) =>
             selectedItem.address === address && selectedItem.tokenId === tokenId
@@ -49,9 +49,11 @@ export default function NFTList ({ NFTData ,NFTBinds,curAccount}){
             // 如果未选中，则添加到数组
             setSelectedNFTs((prevSelectedNFTs) => [
             ...prevSelectedNFTs,
-            { address, tokenId },
+            { address, tokenId, model},
             ]);
         }
+
+        console.log(selectedNFTs)
     
     }
 
@@ -108,7 +110,7 @@ export default function NFTList ({ NFTData ,NFTBinds,curAccount}){
                                         <img
                                         src={nft.rawMetadata.image}
                                         className={`h-48 w-full cursor-pointer object-cover object-center group-hover:opacity-75 ${isSelected?"border-4 border-green-500":""}`}
-                                        onClick={()=>{selectClick(nft.contract.address,nft.tokenId)}}
+                                        onClick={()=>{selectClick(nft.contract.address,nft.tokenId,nft.rawMetadata.model)}}
                                         />
                                         {isSelected && (
                                             <img

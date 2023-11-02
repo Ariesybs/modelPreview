@@ -14,7 +14,8 @@ mongoose.connect(uri, {
 
 const nftBindSchema = new mongoose.Schema({
   address: String,
-  tokenId: String
+  tokenId: String,
+  model:String
 });
 
 export const bind = mongoose.models.bind?mongoose.models.bind: mongoose.model("bind", {
