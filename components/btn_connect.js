@@ -7,6 +7,7 @@ export default function btn_connect({account}) {
         setCurAccount(account)
     },[])
     const connect = async()=>{
+      console.log("connect")
         const provider = window.ethereum == null?ethers.getDefaultProvider():new ethers.BrowserProvider(window.ethereum)
         const signer = await provider.getSigner();
         const signerAddress = await signer.getAddress();
@@ -31,7 +32,7 @@ export default function btn_connect({account}) {
         className="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600"
         onClick={() => connect}
       >
-        {account===null?"connect":formatAccountAddress(account)}
+        {account===null?"Connect Wallet":formatAccountAddress(account)}
       </button>
     </div>
   );

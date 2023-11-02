@@ -423,6 +423,16 @@ const HomePage = () => {
           </svg>
         </div>
       </section>
+       
+      <div style={{ position: 'fixed', bottom: 0, width: '100%', zIndex: 1 }}>
+      <div className="bg-primary/5 py-4">
+        <div className="container">
+          <p className="text-center text-base text-body-color dark:text-white">
+            &copy; 2023 PencilVision. All rights reserved.
+          </p>
+        </div>
+      </div>
+    </div>
     </>
   );
 };
