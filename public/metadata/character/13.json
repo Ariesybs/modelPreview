@@ -2,5 +2,7 @@
     "description": "This is the character NFT.",
     "external_url": "https://pencilvision.top",
     "image": "https://pencilvision.top/character/image/Chef_Male.png",
-    "name": "Chef_Male"
+    "name": "Chef_Male",
+    "type": "model",
+    "model": "https://pencilvision.top/character/model/Chef_Male.fbx"
 }

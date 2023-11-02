@@ -2,5 +2,7 @@
     "description": "This is the character NFT.",
     "external_url": "https://pencilvision.top",
     "image": "https://pencilvision.top/character/image/Knight_Golden_Male.png",
-    "name": "Knight_Golden_Male"
+    "name": "Knight_Golden_Male",
+    "type": "model",
+    "model": "https://pencilvision.top/character/model/Knight_Golden_Male.fbx"
 }

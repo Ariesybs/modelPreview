@@ -2,6 +2,7 @@ import { NFC } from "./db"
 export default async (req,res)=>{
     //获取NFC列表
     if(req.method === 'GET'){
+        
         const nfcs = await NFC.find({})
         res.status(200).json(nfcs)
     }

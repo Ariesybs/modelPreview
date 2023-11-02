@@ -2,5 +2,7 @@
     "description": "This is the character NFT.",
     "external_url": "https://pencilvision.top",
     "image": "https://pencilvision.top/character/image/BaseCharacter.png",
-    "name": "BaseCharacter"
+    "name": "BaseCharacter",
+    "type": "model",
+    "model": "https://pencilvision.top/character/model/BaseCharacter.fbx"
 }

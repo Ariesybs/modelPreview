@@ -2,5 +2,7 @@
     "description": "This is the character NFT.",
     "external_url": "https://pencilvision.top",
     "image": "https://pencilvision.top/character/image/BlueSoldier_Male.png",
-    "name": "BlueSoldier_Male"
+    "name": "BlueSoldier_Male",
+    "type": "model",
+    "model": "https://pencilvision.top/character/model/BlueSoldier_Male.fbx"
 }

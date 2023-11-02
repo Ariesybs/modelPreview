@@ -2,5 +2,7 @@
     "description": "This is the character NFT.",
     "external_url": "https://pencilvision.top",
     "image": "https://pencilvision.top/character/image/Ninja_Sand_Female.png",
-    "name": "Ninja_Sand_Female"
+    "name": "Ninja_Sand_Female",
+    "type": "model",
+    "model": "https://pencilvision.top/character/model/Ninja_Sand_Female.fbx"
 }

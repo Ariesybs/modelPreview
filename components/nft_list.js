@@ -24,7 +24,9 @@ export default function NFTList ({ NFTData ,NFTBinds,curAccount}){
         for (const key of keys) {
            tamp.push(dic[key])    
         }
+        console.log(NFTData)
         setCategorizedNFTs(tamp)
+        
 
 
     },[])

@@ -2,5 +2,7 @@
     "description": "This is the character NFT.",
     "external_url": "https://pencilvision.top",
     "image": "https://pencilvision.top/character/image/Casual_Female.png",
-    "name": "Casual_Female"
+    "name": "Casual_Female",
+    "type": "model",
+    "model": "https://pencilvision.top/character/model/Casual_Female.fbx"
 }

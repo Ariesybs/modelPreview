@@ -34,6 +34,7 @@ const AccountBind = () => {
   const checkIsBind = async(account)=>{
     try{
         const res = await axios.get(`/api/api_nft?account=${account}`)
+        console.log(res.data)
         setIsBind(res.data.isBind)
         setNFTData(res.data.nfts)
         setNFTBinds(res.data.nft_binds)

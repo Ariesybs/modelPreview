@@ -2,5 +2,7 @@
     "description": "This is the character NFT.",
     "external_url": "https://pencilvision.top",
     "image": "https://pencilvision.top/character/image/Kimono_Female.png",
-    "name": "Kimono_Female"
+    "name": "Kimono_Female",
+    "type": "model",
+    "model": "https://pencilvision.top/character/model/Kimono_Female.fbx"
 }
