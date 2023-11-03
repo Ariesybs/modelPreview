@@ -83,7 +83,7 @@ export default function NFTList ({ NFTData ,NFTBinds,curAccount}){
     
     return (
         <div>
-            <BTN_CONNECT account={curAccount}/>
+            <BTN_CONNECT/>
             <div className="container mx-auto mt-8">
                 {isShow?<ALERT_BOX alertData = {alertData} onClose = {onClose}/>:""}
                 <h1 className="text-5xl text-white font-semibold text-center mb-4">我的NFT</h1>

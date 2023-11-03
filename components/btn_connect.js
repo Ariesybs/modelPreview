@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { ethers } from 'ethers';
-export default function btn_connect({account}) {
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+export default function btn_connect() {
 
     const[curAccount,setCurAccount] = useState(null)
     useEffect(()=>{
-        setCurAccount(account)
+        connect()
     },[])
     const connect = async()=>{
       console.log("connect")
@@ -12,6 +13,7 @@ export default function btn_connect({account}) {
         const signer = await provider.getSigner();
         const signerAddress = await signer.getAddress();
         setCurAccount(signerAddress)
+        console.log(signerAddress)
     }
 
     const formatAccountAddress = (accountAddress, prefixLength = 5, suffixLength = 5)=> {
@@ -20,19 +22,20 @@ export default function btn_connect({account}) {
         const suffix = accountAddress.slice(-suffixLength);
       
         return `${prefix}····${suffix}`;
-      }
+    }
 
   return (
     <div
       className="fixed top-4 right-4 flex items-center"
       style={{ zIndex: '9999' }}
     >
+      
       <button
-        
-        className="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600"
-        onClick={() => connect}
+        className="bg-blue-500 font-bold text-white px-4 py-2 rounded-full hover:bg-blue-600"
+        onClick={() => connect()}
       >
-        {account===null?"Connect Wallet":formatAccountAddress(account)}
+        {curAccount&&<FontAwesomeIcon icon="wallet" className="text-xl mr-2" />}
+        {!curAccount?"Connect Wallet":formatAccountAddress(curAccount)}
       </button>
     </div>
   );

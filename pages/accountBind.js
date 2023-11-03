@@ -1,7 +1,8 @@
 import React, { useState ,useEffect} from "react";
 import { ethers } from "ethers";
 import axios from "axios";
-import{NFC_BIND,NFT_LIST} from '../components'
+import{NFC_BIND,NFT_LIST,BTN_HONEPAGE} from '../components'
+
 const AccountBind = () => {
 
   const [curAccount,setCurAccount] = useState(null);
@@ -44,10 +45,11 @@ const AccountBind = () => {
 }
 
   return (
-    <>
+    <>   
     <div className="relative isolate overflow-hidden flex justify-center items-center min-h-screen bg-gray-900 py-16 sm:py-24 lg:py-32">
+    <BTN_HONEPAGE/>
       {
-        isBind?<NFT_LIST NFTData={NFTData} NFTBinds = {NFTBinds} curAccount = {curAccount}/>:<NFC_BIND curAccount={curAccount}/>
+        isBind?<NFT_LIST NFTData={NFTData} NFTBinds = {NFTBinds} curAccount = {curAccount}/>:<NFC_BIND/>
       }
       
       <div className="absolute left-1/2 top-0 -z-10 -translate-x-1/2 blur-3xl xl:-top-6" aria-hidden="true">

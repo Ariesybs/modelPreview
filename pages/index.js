@@ -2,11 +2,15 @@ import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import { useTheme } from "next-themes";
+import { ethers } from "ethers";
+import { usePathname } from "next/navigation";
+import { BTN_CONNECT } from "../components";
 import { useEffect, useState } from "react";
 import "../globals.css";
 
 const HomePage = () => {
   const { theme, setTheme } = useTheme();
+  const[curAccount,setCurAccount] = useState(null)
   const menuData = [
     {
       id: 1,
@@ -38,6 +42,54 @@ const HomePage = () => {
     setTheme(theme === "light" ? "dark" : "light");
     console.log(theme);
   };
+  useEffect(()=>{
+    connect()
+    window.addEventListener("scroll", handleStickyNavbar);
+  },[])
+
+  const connect = async()=>{
+    console.log("connect")
+      const provider = window.ethereum == null?ethers.getDefaultProvider():new ethers.BrowserProvider(window.ethereum)
+      const signer = await provider.getSigner();
+      const signerAddress = await signer.getAddress();
+      setCurAccount(signerAddress)
+  }
+
+  const formatAccountAddress = (accountAddress, prefixLength = 5, suffixLength = 5)=> {
+
+    const prefix = accountAddress.slice(0, prefixLength);
+    const suffix = accountAddress.slice(-suffixLength);
+  
+    return `${prefix}····${suffix}`;
+  }
+
+  // Navbar toggle
+  const [navbarOpen, setNavbarOpen] = useState(false);
+  const navbarToggleHandler = () => {
+    setNavbarOpen(!navbarOpen);
+  };
+
+  // Sticky Navbar
+  const [sticky, setSticky] = useState(false);
+  const handleStickyNavbar = () => {
+    if (window.scrollY >= 80) {
+      setSticky(true);
+    } else {
+      setSticky(false);
+    }
+  };
+
+  // submenu handler
+  const [openIndex, setOpenIndex] = useState(-1);
+  const handleSubmenu = (index) => {
+    if (openIndex === index) {
+      setOpenIndex(-1);
+    } else {
+      setOpenIndex(index);
+    }
+  };
+
+  const usePathName = usePathname();
   return (
     <>
       <Head>
@@ -48,12 +100,20 @@ const HomePage = () => {
       </Head>
 
       <header
-        className={`header top-0 left-0 z-40 flex w-full items-center bg-transparent absolute`}
+        className={`header left-0 top-0 z-40 flex w-full items-center ${
+          sticky
+            ? "dark:bg-gray-dark dark:shadow-sticky-dark fixed z-[9999] bg-white !bg-opacity-80 shadow-sticky backdrop-blur-sm transition"
+            : "absolute bg-transparent"
+        }`}
       >
         <div className="container">
           <div className="relative -mx-4 flex items-center justify-between">
             <div className="w-60 max-w-full px-4 xl:mr-12">
-              <Link href="/" className={`header-logo block w-full py-8 `}>
+              <Link href="/" 
+              className={`header-logo block w-full ${
+                sticky ? "py-5 lg:py-2" : "py-8"
+              } `}
+              >
                 <Image
                   src="/img/logo/pen_logo1.png"
                   alt="logo"
@@ -72,22 +132,84 @@ const HomePage = () => {
             </div>
             <div className="flex w-full items-center justify-between px-4">
               <div>
+              <button
+                  onClick={navbarToggleHandler}
+                  id="navbarToggler"
+                  aria-label="Mobile Menu"
+                  className="absolute right-4 top-1/2 block translate-y-[-50%] rounded-lg px-3 py-[6px] ring-primary focus:ring-2 lg:hidden"
+                >
+                  <span
+                    className={`relative my-1.5 block h-0.5 w-[30px] bg-black transition-all duration-300 dark:bg-white ${
+                      navbarOpen ? " top-[7px] rotate-45" : " "
+                    }`}
+                  />
+                  <span
+                    className={`relative my-1.5 block h-0.5 w-[30px] bg-black transition-all duration-300 dark:bg-white ${
+                      navbarOpen ? "opacity-0 " : " "
+                    }`}
+                  />
+                  <span
+                    className={`relative my-1.5 block h-0.5 w-[30px] bg-black transition-all duration-300 dark:bg-white ${
+                      navbarOpen ? " top-[-8px] -rotate-45" : " "
+                    }`}
+                  />
+                </button>
                 <nav
                   id="navbarCollapse"
-                  className={`navbar absolute right-0 z-30 w-[250px] rounded border-[.5px] border-body-color/50 bg-white py-4 px-6 duration-300 dark:border-body-color/20 dark:bg-dark lg:visible lg:static lg:w-auto lg:border-none lg:!bg-transparent lg:p-0 lg:opacity-100 invisible top-[120%] opacity-0`}
+                  className={`navbar absolute right-0 z-30 w-[250px] rounded border-[.5px] border-body-color/50 bg-white px-6 py-4 duration-300 dark:border-body-color/20 dark:bg-dark lg:visible lg:static lg:w-auto lg:border-none lg:!bg-transparent lg:p-0 lg:opacity-100 ${
+                    navbarOpen
+                      ? "visibility top-full opacity-100"
+                      : "invisible top-[120%] opacity-0"
+                  }`}
                 >
                   <ul className="block lg:flex lg:space-x-12">
-                    {menuData.map((menuItem) => (
-                      <li key={menuItem.id} className="group relative">
+                    {menuData.map((menuItem,index) => (
+                      <li key={index} className="group relative">
                         {menuItem.path ? (
                           <a
                             href={menuItem.path}
-                            className={`flex py-2 text-base text-dark group-hover:opacity-70 dark:text-white lg:mr-0 lg:inline-flex lg:py-6 lg:px-0`}
+                            className={`flex py-2 text-base lg:mr-0 lg:inline-flex lg:px-0 lg:py-6 ${
+                              usePathName === menuItem.path
+                                ? "text-primary dark:text-white"
+                                : "text-dark hover:text-primary dark:text-white dark:hover:text-white"
+                            }`}
                           >
                             {menuItem.title}
                           </a>
                         ) : (
-                          ""
+                          <>
+                          <p
+                            onClick={() => handleSubmenu(index)}
+                            className="flex cursor-pointer items-center justify-between py-2 text-base text-dark group-hover:text-primary dark:text-white/70 dark:group-hover:text-white lg:mr-0 lg:inline-flex lg:px-0 lg:py-6"
+                          >
+                            {menuItem.title}
+                            <span className="pl-3">
+                              <svg width="25" height="24" viewBox="0 0 25 24">
+                                <path
+                                  fillRule="evenodd"
+                                  clipRule="evenodd"
+                                  d="M6.29289 8.8427C6.68342 8.45217 7.31658 8.45217 7.70711 8.8427L12 13.1356L16.2929 8.8427C16.6834 8.45217 17.3166 8.45217 17.7071 8.8427C18.0976 9.23322 18.0976 9.86639 17.7071 10.2569L12 15.964L6.29289 10.2569C5.90237 9.86639 5.90237 9.23322 6.29289 8.8427Z"
+                                  fill="currentColor"
+                                />
+                              </svg>
+                            </span>
+                          </p>
+                          <div
+                            className={`submenu relative left-0 top-full rounded-sm bg-white transition-[top] duration-300 group-hover:opacity-100 dark:bg-dark lg:invisible lg:absolute lg:top-[110%] lg:block lg:w-[250px] lg:p-4 lg:opacity-0 lg:shadow-lg lg:group-hover:visible lg:group-hover:top-full ${
+                              openIndex === index ? "block" : "hidden"
+                            }`}
+                          >
+                            {menuItem.submenu.map((submenuItem, index) => (
+                              <Link
+                                href={submenuItem.path}
+                                key={index}
+                                className="block rounded py-2.5 text-sm text-dark hover:text-primary dark:text-white/70 dark:hover:text-white lg:px-3"
+                              >
+                                {submenuItem.title}
+                              </Link>
+                            ))}
+                          </div>
+                        </>
                         )}
                       </li>
                     ))}
@@ -95,16 +217,18 @@ const HomePage = () => {
                 </nav>
               </div>
               <div className="flex items-center justify-end pr-16 lg:pr-0">
-                <Link
-                  href="/#"
+                <button
+                  onClick={()=>connect()}
                   className="ease-in-up hidden rounded-md bg-primary py-3 px-8 text-base font-bold text-white transition duration-300 hover:bg-opacity-90 hover:shadow-signUp md:block md:px-9 lg:px-6 xl:px-9"
                 >
-                  Connect Wallet
-                </Link>
+                  {curAccount?formatAccountAddress(curAccount):"Connect Wallet"}
+                </button>
+                
                 <div>
                   <button
-                    onClick={toggleTheme}
-                    className="bg-gray-2 dark:bg-dark-bg flex h-9 w-9 cursor-pointer items-center justify-center rounded-full text-black dark:text-white md:h-14 md:w-14"
+                    aria-label='theme toggler'
+                    onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                    className="flex items-center justify-center text-black rounded-full cursor-pointer bg-gray-2 dark:bg-dark-bg h-9 w-9 dark:text-white md:h-14 md:w-14"
                   >
                     <svg
                       viewBox="0 0 23 23"
@@ -164,12 +288,12 @@ const HomePage = () => {
                   business website, built-with Next 13.x and Tailwind CSS.
                 </p>
                 <div className="flex flex-col items-center justify-center space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
-                  <Link
-                    href="https://nextjstemplates.com/templates/startup"
+                  <a
+                    href="/accountBind"
                     className="rounded-md bg-primary py-4 px-8 text-base font-semibold text-white duration-300 ease-in-out hover:bg-primary/80"
                   >
-                    Download Now
-                  </Link>
+                    Get Start
+                  </a>
                   <Link
                     href="https://github.com/NextJSTemplates/startup-nextjs"
                     className="rounded-md bg-black/20 py-4 px-8 text-base font-semibold text-black duration-300 ease-in-out hover:bg-black/30 dark:bg-white/20 dark:text-white dark:hover:bg-white/30"
@@ -428,7 +552,7 @@ const HomePage = () => {
       <div className="bg-primary/5 py-4">
         <div className="container">
           <p className="text-center text-base text-body-color dark:text-white">
-            &copy; 2023 PencilVision. All rights reserved.
+            &copy; {new Date().getFullYear()} Pencilvision. All rights reserved.
           </p>
         </div>
       </div>
