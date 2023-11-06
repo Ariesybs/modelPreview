@@ -96,7 +96,7 @@ export default function NFTList ({ NFTData ,NFTBinds,curAccount}){
                                 <div className=" text-3xl font-semibold text-center text-white pt-10 mb-4">
                                 {contract.symbol}
                                 </div>
-                                <div  className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+                                <div  className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 xl:gap-x-8">
                                 
                                 {contract.nft.map((nft) => {
                                     const isSelected = selectedNFTs.some(
@@ -108,7 +108,7 @@ export default function NFTList ({ NFTData ,NFTBinds,curAccount}){
                                     <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7 relative">
                                         <img
                                         src={nft.rawMetadata.image}
-                                        className={`h-48 w-full cursor-pointer object-cover object-center group-hover:opacity-75 ${isSelected?"border-4 border-green-500":""}`}
+                                        className={`h-48 w-48 cursor-pointer object-cover object-center group-hover:opacity-75 ${isSelected?"border-4 border-green-500":""}`}
                                         onClick={()=>{selectClick(nft.contract.address,nft.tokenId,nft.rawMetadata.model)}}
                                         />
                                         {isSelected && (
