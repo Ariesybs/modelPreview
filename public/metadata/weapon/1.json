@@ -1,0 +1,8 @@
+{
+    "description": "This is the weapon NFT.",
+    "external_url": "https://pencilvision.top",
+    "image": "https://pencilvision.top/weapon/image/box.png",
+    "name": "Weapon1",
+    "type": "model",
+    "model": "https://pencilvision.top/weapon/model/Weapon01.fbx"
+}
