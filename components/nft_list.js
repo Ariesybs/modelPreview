@@ -8,6 +8,7 @@ export default function NFTList ({ NFTData ,NFTBinds,curAccount}){
     const [alertData,setAlertData] = useState({})
     const [isShow,setIsShow] = useState(false)
     useEffect(()=>{
+        console.log(NFTData)
         setSelectedNFTs(NFTBinds)
         const dic = {}
         NFTData.map((nft)=>{
@@ -52,8 +53,6 @@ export default function NFTList ({ NFTData ,NFTBinds,curAccount}){
             { address, tokenId, model},
             ]);
         }
-
-        console.log(selectedNFTs)
     
     }
 
