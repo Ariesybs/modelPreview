@@ -2,14 +2,26 @@ import axios from "axios";
 import React,{useEffect, useState} from "react";
 import { ethers } from "ethers";
 import { ALERT_BOX,BTN_CONNECT } from ".";
-export default function NFTList ({ NFTData ,NFTBinds,curAccount}){
+export default function NFTList ({curAccount}){
     const[categorizedNFTs,setCategorizedNFTs] = useState([])
+    const[NFTCount,setNFTCount] = useState(0)
     const [selectedNFTs, setSelectedNFTs] = useState([]);
     const [alertData,setAlertData] = useState({})
     const [isShow,setIsShow] = useState(false)
+    const [selectedNetwork, setSelectedNetwork] = useState(""); // 添加选择的区块链网络变量
     useEffect(()=>{
-        console.log(NFTData)
-        setSelectedNFTs(NFTBinds)
+        fetchNFTs()
+        
+    },[selectedNetwork])
+
+    const fetchNFTs =  async()=>{
+        console.log(selectedNetwork)
+        try{
+            const res = await axios.get(`/api/api_nft?account=${curAccount}&network=${selectedNetwork}`)
+        
+        const NFTData = res.data.nfts
+        setNFTCount(NFTData.length)
+        const NFTBinds = res.data.nft_binds
         const dic = {}
         NFTData.map((nft)=>{
             if(!dic[nft.contract.address]){
@@ -25,12 +37,38 @@ export default function NFTList ({ NFTData ,NFTBinds,curAccount}){
         for (const key of keys) {
            tamp.push(dic[key])    
         }
-        console.log(NFTData)
         setCategorizedNFTs(tamp)
+        setSelectedNFTs(NFTBinds)
+    }catch(e){
         
+    }
+    }
 
-
-    },[])
+    const Networks =  {
+        ETH_MAINNET : "eth-mainnet",
+        ETH_ROPSTEN : "eth-ropsten",
+        ETH_GOERLI : "eth-goerli",
+        ETH_KOVAN :"eth-kovan",
+        ETH_RINKEBY : "eth-rinkeby",
+        ETH_SEPOLIA : "eth-sepolia",
+        OPT_MAINNET : "opt-mainnet",
+        OPT_KOVAN : "opt-kovan",
+        OPT_GOERLI : "opt-goerli",
+        ARB_MAINNET : "arb-mainnet",
+        ARB_RINKEBY : "arb-rinkeby",
+        ARB_GOERLI :"arb-goerli",
+        MATIC_MAINNET : "polygon-mainnet",
+        MATIC_MUMBAI : "polygon-mumbai",
+        ASTAR_MAINNET : "astar-mainnet",
+        POLYGONZKEVM_MAINNET : "polygonzkevm-mainnet",
+        POLYGONZKEVM_TESTNET : "polygonzkevm-testnet",
+        BASE_MAINNET : "base-mainnet",
+        BASE_GOERLI : "base-goerli"
+    }
+    const networkOptions = Object.entries(Networks).map(([key, value]) => ({
+        value,
+        label: key
+      }));
 
     //NFT选择
     const selectClick = (address,tokenId,model)=>{
@@ -55,6 +93,13 @@ export default function NFTList ({ NFTData ,NFTBinds,curAccount}){
         }
     
     }
+
+    const handleNetworkChange = (event) => {
+        const option = event.target.value
+        if(option === "") return
+
+        setSelectedNetwork(event.target.value);
+      };
 
     //NFT绑定与导入
     const NFTBind = async()=>{        
@@ -89,6 +134,17 @@ export default function NFTList ({ NFTData ,NFTBinds,curAccount}){
                 <p className="text-1xl font-semibold text-center text-white pt-10 mb-4">选择您的NFT，并单击右下方按钮与您的NFC卡带进行绑定</p>
                 <div>
                 <h2 className="sr-only">NFTs</h2>
+                <select
+                    value={selectedNetwork}
+                    onChange={handleNetworkChange}
+                    className="fixed top-4 right-60 flex items-center appearance-none bg-white border rounded py-2 px-4 text-gray-700"
+                    style={{ zIndex: '9999' }}
+                >
+                    <option value="">选择区块链网络</option>
+                    {networkOptions.map(network => (
+                        <option key={network.value} value={network.value}>{network.label}</option>
+                    ))}
+                </select>
                     <div >
                     {
                         categorizedNFTs.map((contract) => (
@@ -131,7 +187,7 @@ export default function NFTList ({ NFTData ,NFTBinds,curAccount}){
                                     onClick={NFTBind}
                                 >
                                     <div className="text-center">
-                                        {`${selectedNFTs.length}/${NFTData.length}`}
+                                        {`${selectedNFTs.length}/${NFTCount}`}
                                     </div>
                                     <div className="text-center border-t pt-1">
                                         绑定

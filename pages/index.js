@@ -32,16 +32,13 @@ const HomePage = () => {
     },
     {
       id: 4,
-      title: "NFC",
+      title: "NFT Market",
       path: "/#",
       newTab: false,
     },
   ];
 
-  const toggleTheme = () => {
-    setTheme(theme === "light" ? "dark" : "light");
-    console.log(theme);
-  };
+
   useEffect(()=>{
     connect()
     window.addEventListener("scroll", handleStickyNavbar);
@@ -136,7 +133,7 @@ const HomePage = () => {
                   onClick={navbarToggleHandler}
                   id="navbarToggler"
                   aria-label="Mobile Menu"
-                  className="absolute right-4 top-1/2 block translate-y-[-50%] rounded-lg px-3 py-[6px] ring-primary focus:ring-2 lg:hidden"
+                  className="absolute right-4 top-1/2 block translate-y-[-50%] rounded-lg px-3 py-[6px] ring-primary focus:ring-2 visible lg:invisible"
                 >
                   <span
                     className={`relative my-1.5 block h-0.5 w-[30px] bg-black transition-all duration-300 dark:bg-white ${
@@ -153,7 +150,7 @@ const HomePage = () => {
                       navbarOpen ? " top-[-8px] -rotate-45" : " "
                     }`}
                   />
-                </button>
+              </button>
                 <nav
                   id="navbarCollapse"
                   className={`navbar absolute right-0 z-30 w-[250px] rounded border-[.5px] border-body-color/50 bg-white px-6 py-4 duration-300 dark:border-body-color/20 dark:bg-dark lg:visible lg:static lg:w-auto lg:border-none lg:!bg-transparent lg:p-0 lg:opacity-100 ${
@@ -282,23 +279,27 @@ const HomePage = () => {
                   Build Your Oasis World With AR&VR
                 </h1>
                 <p className="mb-12 text-base font-medium !leading-relaxed text-body-color dark:text-white dark:opacity-90 sm:text-lg md:text-xl">
-                  Startup is free Next.js template for startups and SaaS
-                  business websites comes with all the essential pages,
-                  components, and sections you need to launch a complete
-                  business website, built-with Next 13.x and Tailwind CSS.
+                Here, you will enter the virtual world through VR&AR technology. 
+                We will save your digital assets in the form of NFT in the blockchain. 
+                By participating in our game, you will have the opportunity to obtain super NFT in the game. 
+                Super NFT will connect us For all games on the platform, 
+                this super NFT will become the corresponding game asset in each game, 
+                rather than being limited to a single game. Finally, each player's NFT assets can be sold or auctioned in our NFT market. 
+                All players participating in market transactions will receive PEN tokens issued by us. What are you waiting for? 
+                Come and participate!
                 </p>
                 <div className="flex flex-col items-center justify-center space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
                   <a
                     href="/accountBind"
                     className="rounded-md bg-primary py-4 px-8 text-base font-semibold text-white duration-300 ease-in-out hover:bg-primary/80"
                   >
-                    Get Start
+                    Start
                   </a>
                   <Link
-                    href="https://github.com/NextJSTemplates/startup-nextjs"
+                    href="#"
                     className="rounded-md bg-black/20 py-4 px-8 text-base font-semibold text-black duration-300 ease-in-out hover:bg-black/30 dark:bg-white/20 dark:text-white dark:hover:bg-white/30"
                   >
-                    Star on GitHub
+                    NFT Market
                   </Link>
                 </div>
               </div>

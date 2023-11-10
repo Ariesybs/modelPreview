@@ -3,16 +3,23 @@ import {Alchemy,Network} from 'alchemy-sdk'
 import { ethers } from "ethers";
 require("dotenv").config()
 export default async (req,res)=>{
-    const config = {
-        apiKey: process.env.ALCHEMY_API_KEY, // API Key
-        network: Network.ETH_SEPOLIA, // 区块链网络
-    };
-
-    const alchemy = new Alchemy(config);
+    
     
     if(req.method === 'GET'){
         //根据账户查找
         const account = req.query.account 
+        const network = req.query.network
+        const apiKeyDick = {
+            "eth-sepolia":process.env.SEPOLIA_API_KEY,
+            "polygonzkevm-testnet":process.env.POLYGON_TEST_API_KEY
+        }
+
+        const config = {
+            apiKey: apiKeyDick[network], // API Key
+            network: network, // 区块链网络
+        };
+    
+        const alchemy = new Alchemy(config);
         if(account){
             //检测是否绑定
             const find_bind = await bind.findOne({account_bind:account})
