@@ -13,7 +13,11 @@ export default function nfc_unbind() {
     ethereum.on('accountsChanged', checkAccount);
   },[curAccount])
   const checkAccount = async()=>{
-    
+    if (isMobileDevice()) {
+      // 手机用户的处理逻辑
+      console.log("手机用户无法使用 Metamask");
+      return;
+    }
     const provider = window.ethereum == null?ethers.getDefaultProvider():new ethers.BrowserProvider(window.ethereum)
     const signer = await provider.getSigner();
     const signerAddress = await signer.getAddress();
@@ -23,6 +27,20 @@ export default function nfc_unbind() {
     setIsBind(res.data!==null)
     setNfcBind(res.data===null?null:res.data.nfc_id)
   }
+
+  function isMobileDevice() {
+    const userAgent = navigator.userAgent.toLowerCase();
+    const mobileKeywords = [
+      'iphone',
+      'ipod',
+      'android',
+      'blackberry',
+      'windows phone'
+    ];
+  
+    return mobileKeywords.some(keyword => userAgent.includes(keyword));
+  }
+  
 
   return (
 

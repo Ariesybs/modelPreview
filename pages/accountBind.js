@@ -20,6 +20,11 @@ const AccountBind = () => {
 
   const checkAccount = async()=>{
     try{
+      if (isMobileDevice()) {
+        // 手机用户的处理逻辑
+        console.log("手机用户无法使用 Metamask");
+        return;
+      }
       const provider = window.ethereum === null?ethers.getDefaultProvider():new ethers.BrowserProvider(window.ethereum);
       const signer = await provider.getSigner();
       const account = await signer.getAddress();
@@ -29,6 +34,19 @@ const AccountBind = () => {
       console.log("用户取消metamask登陆")
     }
     
+  }
+
+  function isMobileDevice() {
+    const userAgent = navigator.userAgent.toLowerCase();
+    const mobileKeywords = [
+      'iphone',
+      'ipod',
+      'android',
+      'blackberry',
+      'windows phone'
+    ];
+  
+    return mobileKeywords.some(keyword => userAgent.includes(keyword));
   }
 
   
