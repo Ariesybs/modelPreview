@@ -9,9 +9,8 @@ export default async(req,res)=>{
         const provider = new ethers.JsonRpcProvider(rpc);
         const connectedWallet = wallet.connect(provider);
         const contract = new ethers.Contract(address, abi, connectedWallet);
-        const token_level = 3
         try{
-            const tx = await contract.mint(account,token_level);
+            const tx = await contract.mint(account);
             await tx.wait(); 
             res.status(200).json({message:"NFT铸造完成"})
         }catch(e){
