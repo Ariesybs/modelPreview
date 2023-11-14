@@ -1,17 +1,20 @@
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import axios from "axios";
-import { ALERT_BOX } from ".";
+import { ALERT_BOX } from "../components";
 import { BTN_CONNECT ,BTN_HONEPAGE} from "../components";
 export default function nfc_unbind() {
 
   const[curAccount,setCurAccount] = useState()
   const[isBind,setIsBind] = useState(false)
   const[nfcBind,setNfcBind] = useState()
+  const [alertData,setAlertData] = useState({})
+  const [isShow,setIsShow] = useState(false)
+
   useEffect(()=>{
     checkAccount()
     ethereum.on('accountsChanged', checkAccount);
-  },[curAccount])
+  },[curAccount,isBind])
   const checkAccount = async()=>{
     if (isMobileDevice()) {
       // 手机用户的处理逻辑
@@ -28,6 +31,21 @@ export default function nfc_unbind() {
     setNfcBind(res.data===null?null:res.data.nfc_id)
   }
 
+  const unbind = async()=>{
+    if(!confirm(`确认解绑${nfcBind}的NFC？`))return
+    try{
+      const res = await axios.delete(`/api/api_bind?id=${nfcBind}`)
+      const data =  {}
+      data.isSuccess = res.data.isSuccess
+      data.message = res.data.message
+      setAlertData(data)
+      setIsShow(true)
+      setIsBind(false)
+    }catch(e){
+
+    }
+  }
+
   function isMobileDevice() {
     const userAgent = navigator.userAgent.toLowerCase();
     const mobileKeywords = [
@@ -40,11 +58,16 @@ export default function nfc_unbind() {
   
     return mobileKeywords.some(keyword => userAgent.includes(keyword));
   }
+
+  const onClose = ()=>{
+    setIsShow(false)
+  }
   
 
   return (
 
     <div className="relative isolate overflow-hidden flex justify-center items-center min-h-screen bg-gray-900 py-16 sm:py-24 lg:py-32">
+      {isShow?<ALERT_BOX alertData = {alertData} onClose = {onClose}/>:""}
      <div>
      <BTN_CONNECT/>
       <BTN_HONEPAGE/>
@@ -69,6 +92,7 @@ export default function nfc_unbind() {
               {
                 isBind?(
                   <button
+                  onClick={()=>unbind()}
                     className=" flex-none rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
                   >
                     解绑

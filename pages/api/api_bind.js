@@ -44,7 +44,7 @@ export default async (req, res) => {
       await nfc.save()
       res.status(200).json({isSuccess:true,message:"账户绑定成功"})
     }catch(e){
-      res.status(400).json({isSuccess:false,message:"账户绑定失败"})
+      res.status(200).json({isSuccess:false,message:"账户绑定失败"})
     }
 
     
@@ -58,9 +58,9 @@ export default async (req, res) => {
     try{
       await bind.deleteOne({nfc_id:nfc_id})
       await nfc.save()
-      res.status(200).json({message:"账户解绑成功"})
+      res.status(200).json({isSuccess:true,message:"账户解绑成功"})
     }catch(e){
-      res.status(400).json({message:"账户解绑失败"})
+      res.status(200).json({isSuccess:false,message:"账户解绑失败"})
     }
   }
 };

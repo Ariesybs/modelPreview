@@ -12,11 +12,13 @@ const AccountBind = () => {
   const [NFTData,setNFTData] = useState();
 
   const [NFTBinds,setNFTBinds] = useState(null)
+
+  
   useEffect(()=>{
     checkAccount();
     // 实时监听MetaMask账户变化
     ethereum.on('accountsChanged', checkAccount);
-  },[])
+  },[isBind])
 
   const checkAccount = async()=>{
     try{

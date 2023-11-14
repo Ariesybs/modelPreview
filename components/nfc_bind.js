@@ -1,15 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import axios from "axios";
 import { ALERT_BOX , BTN_CONNECT} from ".";
 export default function nfc_bind({curAccount}) {
   console.log(curAccount)
     const [inputValue, setInputValue] = useState("");
-    const [alertData, setAlertData] = useState(null);
+    const [alertData,setAlertData] = useState({})
+    const [isShow,setIsShow] = useState(false)
     const [signature, setSignature] = useState("");
     const handleInputChange = (event) => {
         setInputValue(event.target.value);
-        
     };
 
     const handleBindClick = async () => {
@@ -24,22 +24,24 @@ export default function nfc_bind({curAccount}) {
     const signerAddress = await signer.getAddress();
     try{
         const res = await axios.post("/api/api_bind", { secret_key, signerAddress, signature })
-        setAlertData({ isSuccess: res.data.isSuccess, message: res.data.message });
+        const data =  {}
+        data.isSuccess = res.data.isSuccess
+        data.message = res.data.message
+        setAlertData(data)
+        setIsShow(true)
     }catch(e){
         console.log(e)
     }
     
     };
+
+    const onClose = ()=>{
+      setIsShow(false)
+    }
   return (
     <div>
       <BTN_CONNECT account={curAccount}/>
-        {alertData && (
-        <ALERT_BOX
-          isSuccess={alertData.isSuccess}
-          message={alertData.message}
-          onClose={() => setAlertData(null)}
-        />
-      )}    
+      {isShow?<ALERT_BOX alertData = {alertData} onClose = {onClose}/>:""}    
       <div className="mx-auto max-w-7xl px-6 lg:px-8    ">
         <div className="mx-auto grid max-w-3xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-2">
           <div className="max-w-xl lg:max-w-lg flex flex-col justify-center">
