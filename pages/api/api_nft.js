@@ -38,7 +38,7 @@ export default async (req,res)=>{
         const nfc_id = req.query.nfc_id
         if(nfc_id){
             const find_bind = await bind.findOne({nfc_id:nfc_id})
-            res.status(200).json(find_bind.nft_binds)
+            res.status(200).json({account:find_bind.account_bind,nft:find_bind.nft_binds})
         }
     }
 

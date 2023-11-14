@@ -20,6 +20,7 @@ export default function NFTList ({curAccount}){
             const res = await axios.get(`/api/api_nft?account=${curAccount}&network=${selectedNetwork}`)
         
         const NFTData = res.data.nfts
+        console.log(NFTData)
         setNFTCount(NFTData.length)
         const NFTBinds = res.data.nft_binds
         const dic = {}
